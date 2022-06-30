@@ -1,0 +1,22 @@
+{% extends 'data_recorder/base.html' %}
+
+{% block database_form %}
+
+<ul></ul>
+<div class="conainer">
+<h4>Quality board</h4>
+</div>
+<br></br>
+        {% if submitted %}
+            <h4>Data was submitted to the quality board.</h4>
+
+        {% else %} <!--  make the form visible while data has not been submitted -->
+            <form action="" method=POST>
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <input type="submit" value="Submit" class ="btn btn-secondary">
+            </form>
+        {% endif %}
+{% endblock database_form %}
