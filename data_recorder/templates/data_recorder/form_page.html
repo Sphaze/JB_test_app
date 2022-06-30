@@ -1,6 +1,8 @@
 {% extends 'data_recorder/base.html' %}
 
-{% block database_form %}
+{% block head %}
+<title>Quality board</title>
+{% endblock %}
 
 <ul></ul>
 <div class="conainer">
@@ -9,6 +11,21 @@
 <br></br>
         {% if submitted %}
             <h4>Data was submitted to the quality board.</h4>
+
+            <p>Access the admin page to see the database record. Log in and click on "posts".</p>
+
+            <p>Alan:</p>
+            <ul>
+                <li>Username: Alan</li>
+                <li>Password: alan123</li>
+            </ul> 
+            <br></br>
+
+            <p>Lakshmi:</p>
+            <ul>
+                <li>Username: Lakshmi</li>
+                <li>Password: lakshmi123</li>
+            </ul> 
 
         {% else %} <!--  make the form visible while data has not been submitted -->
             <form action="" method=POST>
