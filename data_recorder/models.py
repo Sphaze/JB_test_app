@@ -5,9 +5,27 @@ from django.db.models import DurationField
 from django.utils import timezone
 from django.contrib.auth.models import User
 #from django.utils.duration import duration_string
-
 from django.utils import duration
 from django.utils.duration import _get_duration_components
+
+import datetime
+from django.utils.dateparse import parse_duration
+
+# this customdurationfield will take an input of minutes instead of seconds
+class CustomDurationField(DurationField):
+
+    def to_python(self, value):
+        if value is None:
+            return value
+        if isinstance(value, datetime.timedelta):
+            return value * 60
+        try:
+            parsed = parse_duration(value)
+        except ValueError:
+            pass
+        else:
+            if parsed is not None:
+                return parsed
 
 
 class control_field(models.TextChoices):
@@ -44,8 +62,8 @@ class Post(models.Model):
     supervisor_team = models.CharField(max_length=100)
     person_responsible = models.CharField(max_length=100)
     cost = models.PositiveIntegerField()
-    est_completion_time = models.DurationField(default="") # altered method "duration_string" at django.utils.duration
-    downtime = models.DurationField(default="")
+    est_completion_time = CustomDurationField() # altered method "duration_string" at django.utils.duration
+    downtime = CustomDurationField()
     issue_resolved = models.CharField(max_length=1, choices=control_field.choices, default=control_field.YES)
     description_of_issue = models.TextField(null=True, default="")
     root_cause_of_issue = models.TextField(null=True, default="")
