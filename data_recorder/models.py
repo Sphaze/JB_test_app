@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import DurationField
 from django.utils import timezone
 from django.contrib.auth.models import User
-#from django.utils.duration import duration_string
+from django.utils.duration import duration_string
 from django.utils import duration
 from django.utils.duration import _get_duration_components
 
@@ -26,6 +26,15 @@ class CustomDurationField(DurationField):
         else:
             if parsed is not None:
                 return parsed
+    
+    def duration_string(duration):
+    
+        """Version of str(timedelta) which is not English specific."""
+        days, hours, minutes = _get_duration_components(duration)
+
+        string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes)
+
+        return string
 
 
 class control_field(models.TextChoices):
