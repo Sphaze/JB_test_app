@@ -1,17 +1,13 @@
+from urllib.parse import DefragResultBytes
 from django import forms
 from django.db import models
+from django.db.models import DurationField
 from django.utils import timezone
 from django.contrib.auth.models import User
+#from django.utils.duration import duration_string
+
+from django.utils import duration
 from django.utils.duration import _get_duration_components
-
-class CustomDurationField(models.DurationField):
-    def value_to_string(self, obj):
-        val = self.value_from_object(obj)
-        if val is None:
-            return 'Enter the time duration in minutes'
-
-        days, hours, minutes = _get_duration_components(val)
-        return '{} days, {:02d} hours, {:02d} minutes'.format(days, hours, minutes)
 
 
 class control_field(models.TextChoices):
@@ -48,8 +44,8 @@ class Post(models.Model):
     supervisor_team = models.CharField(max_length=100)
     person_responsible = models.CharField(max_length=100)
     cost = models.PositiveIntegerField()
-    est_completion_time = CustomDurationField()
-    downtime = CustomDurationField()
+    est_completion_time = models.DurationField() # altered method "duration_string" at django.utils.duration
+    downtime = models.DurationField()
     issue_resolved = models.CharField(max_length=1, choices=control_field.choices, default=control_field.YES)
     description_of_issue = models.TextField(null=True, default="")
     root_cause_of_issue = models.TextField(null=True, default="")
