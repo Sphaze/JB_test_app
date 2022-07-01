@@ -9,19 +9,19 @@ import datetime
 from django.utils.dateparse import parse_duration
 
 
-class duration():
-    
-    def duration_string(duration):
 
-        """Version of str(timedelta) which is not English specific."""
-        days, hours, minutes = _get_duration_components(duration)
+def duration_string(duration):
 
-        string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes) # overriding the duration string
+    """Version of str(timedelta) which is not English specific."""
+    days, hours, minutes = _get_duration_components(duration)
 
-        return string
-    
+    string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes) # overriding the duration string
+
+    return string
+
 
 class CustomDurationField(DurationField):
+
     #override
     def to_python(self, value):
         if value is None:
@@ -36,6 +36,12 @@ class CustomDurationField(DurationField):
         else:
             if parsed is not None:
                 return parsed
+    
+    def value_to_string(self, obj):
+
+        val = self.value_from_object(obj)
+        return duration_string(val)
+
         
 
 class control_field(models.TextChoices):
@@ -72,8 +78,8 @@ class Post(models.Model):
     supervisor_team = models.CharField(max_length=100)
     person_responsible = models.CharField(max_length=100)
     cost = models.PositiveIntegerField()
-    est_completion_time = CustomDurationField("Estimated completion time: D H:M:S") # altered method "duration_string" at django.utils.duration
-    downtime = CustomDurationField("Downtime: D H:M:S")
+    est_completion_time = CustomDurationField("Completion time: D H:M:S ") # altered method "duration_string" at django.utils.duration
+    downtime = CustomDurationField("Downtime: D H:M:S ")
     issue_resolved = models.CharField(max_length=1, choices=control_field.choices, default=control_field.YES)
     description_of_issue = models.TextField(null=True, default="")
     root_cause_of_issue = models.TextField(null=True, default="")
