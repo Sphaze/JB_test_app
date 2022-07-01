@@ -17,12 +17,12 @@ def duration_string(duration):
     """Version of str(timedelta) which is not English specific."""
     days, hours, minutes = _get_duration_components(duration)
 
-    string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes)
+    string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes) # overriding the duration string
 
     return string
     
 class CustomDurationField(DurationField):
-
+    #override
     def to_python(self, value):
         if value is None:
             return value
@@ -36,8 +36,8 @@ class CustomDurationField(DurationField):
         else:
             if parsed is not None:
                 return parsed
-                
-    def to_representation(self, value):
+    #override            
+    def value_to_string(self, value):
     
        return duration_string(value)
     
@@ -76,8 +76,8 @@ class Post(models.Model):
     supervisor_team = models.CharField(max_length=100)
     person_responsible = models.CharField(max_length=100)
     cost = models.PositiveIntegerField()
-    est_completion_time = CustomDurationField() # altered method "duration_string" at django.utils.duration
-    downtime = CustomDurationField()
+    est_completion_time = CustomDurationField(default="") # altered method "duration_string" at django.utils.duration
+    downtime = CustomDurationField(default="")
     issue_resolved = models.CharField(max_length=1, choices=control_field.choices, default=control_field.YES)
     description_of_issue = models.TextField(null=True, default="")
     root_cause_of_issue = models.TextField(null=True, default="")
