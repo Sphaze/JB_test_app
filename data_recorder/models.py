@@ -27,9 +27,9 @@ class control_field_2(models.TextChoices):
 class Post(models.Model):
 
     LOCATION = (
-        ('1', 'BELFAST'),
-        ('2', 'IRELAND'),
-        ('3', 'UK'),
+        ('1', 'Location A'),
+        ('2', 'Location B'),
+        ('3', 'Location C'),
     )
 
     AREA_OF_ISSUE = (
@@ -57,7 +57,7 @@ class Post(models.Model):
     corrective_action = models.TextField(null=True, default="")
     validation_action = models.TextField(null=True, default="")
     issue_affects_other_areas = models.CharField(max_length=1, choices=control_field_2.choices, default=control_field_2.NO)
-    clarify_issue = models.TextField(null=True, blank=True, default="")
+    clarify_issue = models.TextField(null=True, blank=True, default="") # optional field
     prevented_reoccurence = models.CharField(max_length=1, choices=control_field.choices, default=control_field.YES)
     closure_date = models.DateTimeField(default=timezone.now)
     images = models.TextField(null=True, default="")
