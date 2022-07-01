@@ -11,31 +11,36 @@ from django.utils.duration import _get_duration_components
 import datetime
 from django.utils.dateparse import parse_duration
 
-# this customdurationfield will take an input of minutes instead of seconds
+
+def duration_string(duration):
+
+    """Version of str(timedelta) which is not English specific."""
+    days, hours, minutes = _get_duration_components(duration)
+
+    string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes)
+
+    return string
+    
 class CustomDurationField(DurationField):
 
     def to_python(self, value):
         if value is None:
             return value
         if isinstance(value, datetime.timedelta):
-            return value * 60
+            val = value * 60
+            return val
         try:
-            parsed = parse_duration(value)
+            parsed = parse_duration(val)
         except ValueError:
             pass
         else:
             if parsed is not None:
                 return parsed
+                
+    def to_representation(self, value):
     
-    def duration_string(duration):
+       return duration_string(value)
     
-        """Version of str(timedelta) which is not English specific."""
-        days, hours, minutes = _get_duration_components(duration)
-
-        string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes)
-
-        return string
-
 
 class control_field(models.TextChoices):
     YES = 'A', 'YES'
