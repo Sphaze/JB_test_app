@@ -1,10 +1,7 @@
-from urllib.parse import DefragResultBytes
-from django import forms
 from django.db import models
 from django.db.models import DurationField
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.utils.duration import duration_string
 from django.utils import duration
 from django.utils.duration import _get_duration_components
 
@@ -12,15 +9,18 @@ import datetime
 from django.utils.dateparse import parse_duration
 
 
-def duration_string(duration):
-
-    """Version of str(timedelta) which is not English specific."""
-    days, hours, minutes = _get_duration_components(duration)
-
-    string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes) # overriding the duration string
-
-    return string
+class duration():
     
+    def duration_string(duration):
+
+        """Version of str(timedelta) which is not English specific."""
+        days, hours, minutes = _get_duration_components(duration)
+
+        string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes) # overriding the duration string
+
+        return string
+    
+
 class CustomDurationField(DurationField):
     #override
     def to_python(self, value):
@@ -36,11 +36,7 @@ class CustomDurationField(DurationField):
         else:
             if parsed is not None:
                 return parsed
-    #override            
-    def value_to_string(self, value):
-    
-       return duration_string(value)
-    
+        
 
 class control_field(models.TextChoices):
     YES = 'A', 'YES'
@@ -76,8 +72,8 @@ class Post(models.Model):
     supervisor_team = models.CharField(max_length=100)
     person_responsible = models.CharField(max_length=100)
     cost = models.PositiveIntegerField()
-    est_completion_time = CustomDurationField(default="") # altered method "duration_string" at django.utils.duration
-    downtime = CustomDurationField(default="")
+    est_completion_time = CustomDurationField("Estimated completion time: D H:M:S") # altered method "duration_string" at django.utils.duration
+    downtime = CustomDurationField("Downtime: D H:M:S")
     issue_resolved = models.CharField(max_length=1, choices=control_field.choices, default=control_field.YES)
     description_of_issue = models.TextField(null=True, default="")
     root_cause_of_issue = models.TextField(null=True, default="")
