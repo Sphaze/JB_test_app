@@ -1,3 +1,4 @@
+import datetime
 from mimetypes import init
 from django.db import models
 from django.db.models import DurationField
@@ -5,21 +6,19 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils import duration
 from django.utils.duration import _get_duration_components
-
-import datetime
-
 from django.utils.dateparse import parse_duration
+from data_recorder.templatetags import custom_filters
 
 
 
-def duration_string(duration):
+# def duration_string(duration):
 
-    """Version of str(timedelta) which is not English specific."""
-    days, hours, minutes = _get_duration_components(duration)
+#     """Version of str(timedelta) which is not English specific."""
+#     days, hours, minutes = _get_duration_components(duration)
 
-    string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes) # overriding the duration string
+#     string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes) # overriding the duration string
 
-    return string
+#     return string
 
 
 class CustomDurationField(DurationField):
@@ -37,14 +36,9 @@ class CustomDurationField(DurationField):
             pass
         else:
             if parsed is not None:
-                return parsed
-    
-    def value_to_string(self, obj):
-
-        val = self.value_from_object(obj)
-        return duration_string(val)
-
+                return 'parsed'
         
+    
 
 class control_field(models.TextChoices):
     YES = 'A', 'YES'

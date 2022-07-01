@@ -142,7 +142,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DATE_INPUT_FORMATS = ['%m/%d/%Y %H:%M:%S']
+DATE_INPUT_FORMATS = ['%d/%m/%Y %H:%M:%S']
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
