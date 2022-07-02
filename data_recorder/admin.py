@@ -22,7 +22,7 @@ class PostAdmin(admin.ModelAdmin):
         str_output = str(obj.est_completion_time)
         str_output_list = str_output.split(':')
 
-        formatted_str = str_output_list[0] + " hours " + str_output_list[1] + " minutes"  # any days will be automatically because of the ISO time format
+        formatted_str = str_output_list[0] + " hours " + str_output_list[1] + " minutes"  # any days will be automatically shown because of the ISO time format
 
         return formatted_str
         # return format_html('<textarea id="1" cols="60" rows="1" style="width: 610px" readonly>{}</textarea>', formatted_str)
@@ -34,7 +34,7 @@ class PostAdmin(admin.ModelAdmin):
         str_output = str(obj.downtime)
         str_output_list = str_output.split(':')
 
-        formatted_str2 = str_output_list[0] + " hours " + str_output_list[1] + " minutes" # any days will be automatically because of the ISO time format
+        formatted_str2 = str_output_list[0] + " hours " + str_output_list[1] + " minutes" # any days will be automatically shown because of the ISO time format
 
         return formatted_str2
         # return format_html('<textarea id="1" cols="60" rows="1" style="width: 610px" readonly>{}</textarea>', formatted_str2)
