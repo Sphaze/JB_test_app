@@ -24,9 +24,9 @@ class PostAdmin(admin.ModelAdmin):
 
         #if there's a space found in the first element, we know there are days because of the iso format "D HH:MM:SS"
         if ' ' in str_output_list[0]: 
-            formatted_str = ""
+            formatted_str = str_output_list[0] + " hours " + str_output_list[1] + " minutes"
         else:   
-            formatted_str = str_output_list[0] + " hourS " + str_output_list[1] + " minutes"
+            formatted_str = str_output_list[0] + " hours " + str_output_list[1] + " minutes"
 
         return formatted_str
         # return format_html('<textarea id="1" cols="60" rows="1" style="width: 610px" readonly>{}</textarea>', formatted_str)
@@ -40,9 +40,9 @@ class PostAdmin(admin.ModelAdmin):
 
         #if there's a space found in the first element, we know there are days because of the iso format "D HH:MM:SS"
         if ' ' in str_output_list[0]: 
-            formatted_str2 = ""
+            formatted_str2 = str_output_list[0] + " hours " + str_output_list[1] + " minutes"
         else:   
-            formatted_str2 = str_output_list[0] + " hourS " + str_output_list[1] + " minutes"
+            formatted_str2 = str_output_list[0] + " hours " + str_output_list[1] + " minutes"
 
         return formatted_str2
         # return format_html('<textarea id="1" cols="60" rows="1" style="width: 610px" readonly>{}</textarea>', formatted_str2)
