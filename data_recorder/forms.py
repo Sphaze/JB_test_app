@@ -85,3 +85,4 @@ class JBForm(forms.ModelForm):
             'ncr': 'NCR',
             'author': ''
         }
+

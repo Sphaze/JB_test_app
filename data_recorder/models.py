@@ -2,28 +2,28 @@ import datetime
 from mimetypes import init
 from django.db import models
 from django.db.models import DurationField
+from django.forms import HiddenInput
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils import duration
 from django.utils.duration import _get_duration_components
 from django.utils.dateparse import parse_duration
 from data_recorder.templatetags import custom_filters
-
+from django import forms
 
 
 # def duration_string(duration):
-
 #     """Version of str(timedelta) which is not English specific."""
 #     days, hours, minutes = _get_duration_components(duration)
 
-#     string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes) # overriding the duration string
+#     string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes)
 
 #     return string
 
 
 class CustomDurationField(DurationField):
 
-    #override
+    #override this function
     def to_python(self, value):
         if value is None:
             return value
@@ -38,7 +38,6 @@ class CustomDurationField(DurationField):
             if parsed is not None:
                 return 'parsed'
         
-    
 
 class control_field(models.TextChoices):
     YES = 'A', 'YES'
@@ -90,7 +89,7 @@ class Post(models.Model):
     ncr = models.TextField(null=True, default="")
     author = models.ForeignKey(User, on_delete=models.CASCADE,default="") #if a user is deleted, delete their entry as well
 
-    #this is called a dunder method (double underscore method)
-    def __str__(self):
-        return self.ncr_number # this will create the name for the database entries in the admin page
 
+    #this is called a dunder method (double underscore method)
+    def __str__(self):  
+        return self.ncr_number # this will create the name for the database entries in the admin page
