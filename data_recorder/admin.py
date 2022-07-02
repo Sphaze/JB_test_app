@@ -16,7 +16,7 @@ class PostAdmin(admin.ModelAdmin):
     exclude = ('est_completion_time', 'downtime') # hide these fields by excluding them
     readonly_fields = ('est_completion_time_readonly', 'downtime_readonly') # display these new fields as readonly
 
-    @admin.display(description='Duration of estimated completion time')
+    @admin.display(description="Duration of estimated completion time")
     def est_completion_time_readonly(self, obj):
             
         str_output = str(obj.est_completion_time)
