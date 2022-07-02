@@ -73,8 +73,8 @@ class Post(models.Model):
     supervisor_team = models.CharField(max_length=100)
     person_responsible = models.CharField(max_length=100)
     cost = models.PositiveIntegerField()
-    est_completion_time = CustomDurationField("Completion time: D H:M:S") # altered method "duration_string" at django.utils.duration
-    downtime = CustomDurationField("Downtime: D H:M:S")
+    est_completion_time = CustomDurationField("Completion time: D H:M:S", default="") # altered method "duration_string" at django.utils.duration
+    downtime = CustomDurationField("Downtime: D H:M:S", default="")
     issue_resolved = models.CharField(max_length=1, choices=control_field.choices, default=control_field.YES)
     description_of_issue = models.TextField(null=True, default="")
     root_cause_of_issue = models.TextField(null=True, default="")
