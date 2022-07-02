@@ -24,7 +24,7 @@ class PostAdmin(admin.ModelAdmin):
 
         #if there's a space found in the first element, we know there are days because of the iso format "D HH:MM:SS"
         if ' ' in str_output_list[0]: 
-            pass
+            formatted_str = ""
         else:   
             formatted_str = str_output_list[0] + " hourS " + str_output_list[1] + " minutes"
 
@@ -40,7 +40,7 @@ class PostAdmin(admin.ModelAdmin):
 
         #if there's a space found in the first element, we know there are days because of the iso format "D HH:MM:SS"
         if ' ' in str_output_list[0]: 
-            pass
+            formatted_str2 = ""
         else:   
             formatted_str2 = str_output_list[0] + " hourS " + str_output_list[1] + " minutes"
 
