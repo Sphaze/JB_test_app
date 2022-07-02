@@ -22,11 +22,7 @@ class PostAdmin(admin.ModelAdmin):
         str_output = str(obj.est_completion_time)
         str_output_list = str_output.split(':')
 
-        #if there's a space found in the first element, we know there are days because of the iso format "D HH:MM:SS"
-        if ' ' in str_output_list[0]: 
-            formatted_str = str_output_list[0] + " hours " + str_output_list[1] + " minutes"
-        else:   
-            formatted_str = str_output_list[0] + " hours " + str_output_list[1] + " minutes"
+        formatted_str = str_output_list[0] + " hours " + str_output_list[1] + " minutes" # any days will be included from the "duration_string" function
 
         return formatted_str
         # return format_html('<textarea id="1" cols="60" rows="1" style="width: 610px" readonly>{}</textarea>', formatted_str)
@@ -38,11 +34,7 @@ class PostAdmin(admin.ModelAdmin):
         str_output = str(obj.downtime)
         str_output_list = str_output.split(':')
 
-        #if there's a space found in the first element, we know there are days because of the iso format "D HH:MM:SS"
-        if ' ' in str_output_list[0]: 
-            formatted_str2 = str_output_list[0] + " hours " + str_output_list[1] + " minutes"
-        else:   
-            formatted_str2 = str_output_list[0] + " hours " + str_output_list[1] + " minutes"
+        formatted_str2 = str_output_list[0] + " hours " + str_output_list[1] + " minutes" # any days will be included from the "duration_string" function
 
         return formatted_str2
         # return format_html('<textarea id="1" cols="60" rows="1" style="width: 610px" readonly>{}</textarea>', formatted_str2)
@@ -57,6 +49,4 @@ class PostAdmin(admin.ModelAdmin):
     # def items(self):
     #     return format_html('<span>{}<br></br>{}</span>',self.spare[0], self.spare[1])
   
-    #def get_form(self, request, obj=None, **kwargs):
-    #       form = super(JBForm, self).get_form(request, obj, **kwargs)
-    #       form.base_fields['ncr_number'].required = False
+  
