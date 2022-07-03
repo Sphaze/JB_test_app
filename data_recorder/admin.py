@@ -27,8 +27,7 @@ class PostAdmin(admin.ModelAdmin):
             formatted_str = str_output_list[1] + "m"
         else:
             formatted_str = str_output_list[0] + "h " + str_output_list[1] + "m"  # any days will be automatically shown because of the ISO time format
-
-        return format_html('<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str)
+        return format_html('<textarea id="1" cols="40" rows="1" readonly><span>"d = days h = hours m = minutes:"</span><br></br>{}</textarea>', formatted_str)
 
     @admin.display(description="Duration of downtime")
     def downtime_readonly(self, obj):
@@ -41,7 +40,7 @@ class PostAdmin(admin.ModelAdmin):
         else:
             formatted_str2 = str_output_list[0] + "h " + str_output_list[1] + "m"  # any days will be automatically shown because of the ISO time format
 
-        return format_html('<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str2)
+        return format_html('<textarea id="1" cols="40" rows="1" readonly><span>"d = days h = hours m = minutes:"</span><br></br>{}</textarea>', formatted_str2)
     
 
     # unused code
