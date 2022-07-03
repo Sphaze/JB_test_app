@@ -36,7 +36,7 @@ class CustomDurationField(DurationField):
             pass
         else:
             if parsed is not None:
-                return 'parsed'
+                return parsed
         
 
 class control_field(models.TextChoices):
