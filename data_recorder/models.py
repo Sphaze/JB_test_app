@@ -1,42 +1,19 @@
 import datetime
-from mimetypes import init
 from django.db import models
 from django.db.models import DurationField
-from django.forms import HiddenInput
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils import duration
-from django.utils.duration import _get_duration_components
-from django.utils.dateparse import parse_duration
-from data_recorder.templatetags import custom_filters
-from django import forms
-
-
-# def duration_string(duration):
-#     """Version of str(timedelta) which is not English specific."""
-#     days, hours, minutes = _get_duration_components(duration)
-
-#     string = "{} days, {} hours, {:02d} minutes".format(days, hours, minutes)
-
-#     return string
 
 
 class CustomDurationField(DurationField):
 
-    #override this function
     def to_python(self, value):
         if value is None:
             return value
         if isinstance(value, datetime.timedelta):
-            val = value * 60
+            val = value * 60 # changing the input to minutes instead of seconds
             return val
-        try:
-            parsed = parse_duration(val)
-        except ValueError:
-            pass
-        else:
-            if parsed is not None:
-                return parsed
         
 
 class control_field(models.TextChoices):
