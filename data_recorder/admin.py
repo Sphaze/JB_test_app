@@ -24,7 +24,7 @@ class PostAdmin(admin.ModelAdmin):
 
         formatted_str = str_output_list[0] + " hours " + str_output_list[1] + " minutes"  # any days will be automatically shown because of the ISO time format
 
-        return format_html('<textarea id="1" cols="40" rows="1">{}</textarea>', formatted_str)
+        return format_html('<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str)
 
 
     @admin.display(description="Duration of downtime")
@@ -35,7 +35,7 @@ class PostAdmin(admin.ModelAdmin):
 
         formatted_str2 = str_output_list[0] + " hours " + str_output_list[1] + " minutes" # any days will be automatically shown because of the ISO time format
 
-        return format_html('<textarea id="1" cols="40" rows="1">{}</textarea>', formatted_str2)
+        return format_html('<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str2)
     
 
     # unused code
