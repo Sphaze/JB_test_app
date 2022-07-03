@@ -11,7 +11,7 @@
 <h4>Quality board</h4>
 </div>
 <br></br>
-        {% if submitted %}
+        {% if subm_key %} <!-- if the value corresponding to the key is true-->
             <h4>Data was submitted to the quality board.</h4>
 
             <p>Access the admin page to see the database record. Log in and click on "posts".</p>
@@ -35,7 +35,7 @@
 
                 {{ form.as_p }}
 
-                <input type="submit" value="Submit" class ="btn btn-secondary">
+                <input type="submit" value="Submit" class ="btn btn-secondary"> <!-- when the input is inside the form, it will work-->
             </form>
         {% endif %}
 {% endblock database_form %}

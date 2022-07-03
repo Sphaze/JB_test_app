@@ -29,10 +29,10 @@ def add_data(request):
             return  HttpResponseRedirect('/?submitted=true') # if this html happens, it will be in the GET request
     else: 
         form = JBForm
-        if 'submitted' in request.GET: # subm variable is normally false, if 'submitted' is true in the html, subm variable becomes true
+        if 'submitted' in request.GET: # if we are in the GET request, subm variable becomes true
             subm = True
         
     form = JBForm
-    return render(request, 'data_recorder/form_page.html', {'form' : form, 'submitted':subm})
+    return render(request, 'data_recorder/form_page.html', {'form' : form, 'subm_key':subm}) # connects to html page here
 
 
