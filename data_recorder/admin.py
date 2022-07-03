@@ -24,8 +24,13 @@ class PostAdmin(admin.ModelAdmin):
         str_output = str(obj.est_completion_time)
         str_output_list = str_output.split(':')
 
-        modify_hour_string = str_output_list[0]
-        hour_num = modify_hour_string[0] #this is like charAt[0] in Java, I capture the hour number
+        modify_hour_string = str_output_list[0] # this portion of text will include days and hours
+
+        if(len(modify_hour_string) > 0): # if there were any days, the length of this portion will be greater than zero
+
+            hour_num = modify_hour_string[len(modify_hour_string)-1] #capture the hour number (the number to the left of the colon which is len(string) - 1)
+        else:
+            hour_num = ""
 
         if  hour_num == "1": #if hours is one, print "hour"
             str_choice_hr = " hour "
@@ -37,7 +42,6 @@ class PostAdmin(admin.ModelAdmin):
         else:
             str_choice_min = " minutes"
 
-
         formatted_str = str_output_list[0] + str_choice_hr + str_output_list[1] + str_choice_min  # any days will be automatically shown because of the ISO time format
       
         return format_html('<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str)
@@ -48,8 +52,13 @@ class PostAdmin(admin.ModelAdmin):
         str_output = str(obj.downtime)
         str_output_list = str_output.split(':')
 
-        modify_hour_string = str_output_list[0]
-        hour_num = modify_hour_string[0] #this is like charAt[0] in Java, I capture the hour number
+        modify_hour_string = str_output_list[0] # this portion of text will include days and hours
+
+        if(len(modify_hour_string) > 0): # if there were any days, the length of this portion will be greater than zero
+           
+            hour_num = modify_hour_string[len(modify_hour_string)-1] #capture the hour number (the number to the left of the colon which is len(string) - 1)
+        else:
+            hour_num = ""
 
         if  hour_num == "1": #if hours is one, print "hour"
             str_choice_hr = " hour "
