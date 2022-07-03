@@ -21,11 +21,13 @@ class PostAdmin(admin.ModelAdmin):
             
         str_output = str(obj.est_completion_time)
         str_output_list = str_output.split(':')
-
-        formatted_str = str_output_list[0] + " hours " + str_output_list[1] + " minutes"  # any days will be automatically shown because of the ISO time format
+   
+        if int(str_output_list[0]) == 0: #if hours is zero, only print minutes
+            formatted_str = str_output_list[1] + " minutes"
+        else:
+            formatted_str = str_output_list[0] + " hours " + str_output_list[1] + " minutes"  # any days will be automatically shown because of the ISO time format
 
         return format_html('<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str)
-
 
     @admin.display(description="Duration of downtime")
     def downtime_readonly(self, obj):
@@ -33,7 +35,10 @@ class PostAdmin(admin.ModelAdmin):
         str_output = str(obj.downtime)
         str_output_list = str_output.split(':')
 
-        formatted_str2 = str_output_list[0] + " hours " + str_output_list[1] + " minutes" # any days will be automatically shown because of the ISO time format
+        if int(str_output_list[0]) == 0: #if hours is zero, only print minutes
+            formatted_str2 = str_output_list[1] + " minutes"
+        else:
+            formatted_str2 = str_output_list[0] + " hours " + str_output_list[1] + " minutes"  # any days will be automatically shown because of the ISO time format
 
         return format_html('<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str2)
     
