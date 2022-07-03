@@ -24,14 +24,14 @@ class PostAdmin(admin.ModelAdmin):
         str_output = str(obj.est_completion_time)
         str_output_list = str_output.split(':')
 
-        modify_hour_string = str_output_list[0] # this portion of text will include days and hours
+        modify_hour_string = str_output_list[0] # this portion of text will include hours and any days
 
-        if(len(modify_hour_string) > 0): # if there were any days, the length of this portion will be greater than zero
+        if(len(modify_hour_string) == 1): # if there were any days, the length of this portion will be greater than one
 
-            hour_num = modify_hour_string[len(modify_hour_string)-1] #capture the hour number (the number to the left of the colon which is len(string) - 1)
+            hour_num = modify_hour_string[0] # there were no days, we take the charAt 0 to get hours
         else:
-            hour_num = ""
-
+            hour_num = modify_hour_string[len(modify_hour_string)-1] #capture the hour number (the number to the left of the colon which is len(string) - 1)
+    
         if  hour_num == "1": #if hours is one, print "hour"
             str_choice_hr = " hour "
         else:
@@ -52,14 +52,14 @@ class PostAdmin(admin.ModelAdmin):
         str_output = str(obj.downtime)
         str_output_list = str_output.split(':')
 
-        modify_hour_string = str_output_list[0] # this portion of text will include days and hours
+        modify_hour_string = str_output_list[0] # this portion of text will include hours and any days
 
-        if(len(modify_hour_string) > 0): # if there were any days, the length of this portion will be greater than zero
-           
-            hour_num = modify_hour_string[len(modify_hour_string)-1] #capture the hour number (the number to the left of the colon which is len(string) - 1)
+        if(len(modify_hour_string) == 1): # if there were any days, the length of this portion will be greater than one
+
+            hour_num = modify_hour_string[0] # there were no days, we take the charAt 0 to get hours
         else:
-            hour_num = ""
-
+            hour_num = modify_hour_string[len(modify_hour_string)-1] #capture the hour number (the number to the left of the colon which is len(string) - 1)
+    
         if  hour_num == "1": #if hours is one, print "hour"
             str_choice_hr = " hour "
         else:
