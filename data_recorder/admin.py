@@ -15,6 +15,8 @@ class PostAdmin(admin.ModelAdmin):
 
     exclude = ('est_completion_time', 'downtime') # hide these fields by excluding them
     readonly_fields = ('est_completion_time_readonly', 'downtime_readonly') # display these new fields as readonly
+    
+    html_title = "d = days&nbsp;&nbsp;&nbsp;&nbsp;h = hours&nbsp;&nbsp;&nbsp;&nbsp;m = minutes<br></br>"
 
     @admin.display(description="Duration of estimated completion time")
     def est_completion_time_readonly(self, obj):
@@ -28,9 +30,7 @@ class PostAdmin(admin.ModelAdmin):
         else:
             formatted_str = str_output_list[0] + "h " + str_output_list[1] + "m"  # any days will be automatically shown because of the ISO time format
       
-        html_title = "d = days&nbsp;&nbsp;&nbsp;&nbsp;h = hours&nbsp;&nbsp;&nbsp;&nbsp;m = minutes<br></br>"
-  
-        return format_html(html_title + '<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str)
+        return format_html(self.html_title + '<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str)
 
     @admin.display(description="Duration of downtime")
     def downtime_readonly(self, obj):
@@ -43,9 +43,7 @@ class PostAdmin(admin.ModelAdmin):
         else:
             formatted_str2 = str_output_list[0] + "h " + str_output_list[1] + "m"  # any days will be automatically shown because of the ISO time format
         
-        html_title = "d = days&nbsp;&nbsp;&nbsp;&nbsp;h = hours&nbsp;&nbsp;&nbsp;&nbsp;m = minutes<br></br>"
-  
-        return format_html(html_title + '<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str2)
+        return format_html(self.html_title + '<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str2)
 
     # unused code
     #spare = []
