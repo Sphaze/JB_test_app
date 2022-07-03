@@ -31,8 +31,6 @@ class PostAdmin(admin.ModelAdmin):
         html_title = "d = days&nbsp;&nbsp;&nbsp;&nbsp;h = hours&nbsp;&nbsp;&nbsp;&nbsp;m = minutes<br></br>"
   
         return format_html(html_title + '<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str)
-  
-
 
     @admin.display(description="Duration of downtime")
     def downtime_readonly(self, obj):
