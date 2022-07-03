@@ -23,9 +23,10 @@ class PostAdmin(admin.ModelAdmin):
         str_output_list = str_output.split(':')
    
         if int(str_output_list[0]) == 0: #if hours is zero, only print minutes
-            formatted_str = str_output_list[1] + " minutes"
+
+            formatted_str = str_output_list[1] + "m"
         else:
-            formatted_str = str_output_list[0] + " hours " + str_output_list[1] + " minutes"  # any days will be automatically shown because of the ISO time format
+            formatted_str = str_output_list[0] + "h " + str_output_list[1] + "m"  # any days will be automatically shown because of the ISO time format
 
         return format_html('<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str)
 
@@ -36,9 +37,9 @@ class PostAdmin(admin.ModelAdmin):
         str_output_list = str_output.split(':')
 
         if int(str_output_list[0]) == 0: #if hours is zero, only print minutes
-            formatted_str2 = str_output_list[1] + " minutes"
+            formatted_str2 = str_output_list[1] + "m"
         else:
-            formatted_str2 = str_output_list[0] + " hours " + str_output_list[1] + " minutes"  # any days will be automatically shown because of the ISO time format
+            formatted_str2 = str_output_list[0] + "h " + str_output_list[1] + "m"  # any days will be automatically shown because of the ISO time format
 
         return format_html('<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str2)
     
