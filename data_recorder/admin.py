@@ -28,7 +28,9 @@ class PostAdmin(admin.ModelAdmin):
         else:
             formatted_str = str_output_list[0] + "h " + str_output_list[1] + "m"  # any days will be automatically shown because of the ISO time format
       
-        return format_html('d = days&nbsp;&nbsp;&nbsp;&nbsp;h = hours&nbsp;&nbsp;&nbsp;&nbsp;m = minutes<br></br><textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str)
+        html_title = "d = days&nbsp;&nbsp;&nbsp;&nbsp;h = hours&nbsp;&nbsp;&nbsp;&nbsp;m = minutes<br></br>"
+  
+        return format_html(html_title + '<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str)
   
 
 
@@ -43,8 +45,9 @@ class PostAdmin(admin.ModelAdmin):
         else:
             formatted_str2 = str_output_list[0] + "h " + str_output_list[1] + "m"  # any days will be automatically shown because of the ISO time format
         
-        return format_html('d = days&nbsp;&nbsp;&nbsp;&nbsp;h = hours&nbsp;&nbsp;&nbsp;&nbsp;m = minutes<br></br><textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str2)
-    
+        html_title = "d = days&nbsp;&nbsp;&nbsp;&nbsp;h = hours&nbsp;&nbsp;&nbsp;&nbsp;m = minutes<br></br>"
+  
+        return format_html(html_title + '<textarea id="1" cols="40" rows="1" readonly>{}</textarea>', formatted_str2)
 
     # unused code
     #spare = []
