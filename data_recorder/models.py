@@ -70,3 +70,9 @@ class Post(models.Model):
     #this is called a dunder method (double underscore method)
     def __str__(self):  
         return self.ncr_number # this will create the name for the database entries in the admin page
+
+
+# class NCR(models.Model):
+
+#     non_conformance_code = models.CharField(max_length=100)
+#     company = models.CharField(max_length=100)

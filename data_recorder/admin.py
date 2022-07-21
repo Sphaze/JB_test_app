@@ -10,7 +10,8 @@ from django import forms
 # admin.site.register(apps.all_models['data_recorder'].values()) #register multiple models
 
 
-@admin.register(Post)
+admin.site.register(Post)
+
 class PostAdmin(admin.ModelAdmin):
 
     exclude = ('est_completion_time', 'downtime') # hide these fields by excluding them
