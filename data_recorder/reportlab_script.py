@@ -162,7 +162,6 @@ class Report:
         textobject.setFont(heading_font, heading_fontsize)
         textobject.textLine("Job ID:")
         self.c.drawText(textobject)
-
         ''' answer blob '''
         textobject = self.c.beginText()
         textobject.setTextOrigin(1.3*cm, 2*inch+2*cm+2*mm)
