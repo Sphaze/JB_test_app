@@ -12,7 +12,7 @@ from hashlib import md5
 
 from reportlab.lib.rltempfile import get_rl_tempfile, get_rl_tempdir
 from . rl_safe_eval import rl_safe_exec, rl_safe_eval, safer_globals
-from PIL import Image
+
 
 class __UNSET__:
     @staticmethod
@@ -386,7 +386,7 @@ def recursiveImport(modulename, baseDir=None, noCWD=0, debug=0):
         if debug:
             print('===== restore sys.path=%s' % repr(opath))
 
-haveImages = Image is not None
+# haveImages = Image is not None
 
 class ArgvDictValue:
     '''A type to allow clients of getArgvDict to specify a conversion function'''
@@ -438,14 +438,14 @@ def getArgvDict(**kw):
 
     return R
 
-def getHyphenater(hDict=None):
-    try:
-        from reportlab.lib.pyHnj import Hyphen
-        if hDict is None: hDict=os.path.join(os.path.dirname(__file__),'hyphen.mashed')
-        return Hyphen(hDict)
-    except ImportError as errMsg:
-        if str(errMsg)!='No module named pyHnj': raise
-        return None
+# def getHyphenater(hDict=None):
+#     try:
+#       #  from reportlab.lib.pyHnj import Hyphen
+#         if hDict is None: hDict=os.path.join(os.path.dirname(__file__),'hyphen.mashed')
+#         return ""Hyphen(hDict)""
+#     except ImportError as errMsg:
+#         if str(errMsg)!='No module named pyHnj': raise
+#         return None
 
 def _className(self):
     '''Return a shortened class name'''
@@ -605,397 +605,397 @@ def rl_get_module(name,dir):
     finally:
         if om: sys.modules[name] = om
 
-def _isPILImage(im):
-    try:
-        return isinstance(im,Image.Image)
-    except AttributeError:
-        return 0
+# def _isPILImage(im):
+#     try:
+#         return isinstance(im,Image.Image)
+#     except AttributeError:
+#         return 0
 
-class ImageReader:
-    "Wraps up PIL to get data from bitmaps"
-    _cache={}
-    _max_image_size = None
-    def __init__(self, fileName,ident=None):
-        if isinstance(fileName,ImageReader):
-            self.__dict__ = fileName.__dict__   #borgize
-            return
-        self._ident = ident
-        #start wih lots of null private fields, to be populated by
-        #the relevant engine.
-        self.fileName = fileName
-        self._image = None
-        self._width = None
-        self._height = None
-        self._transparent = None
-        self._data = None
-        if _isPILImage(fileName):
-            self._image = fileName
-            self.fp = getattr(fileName,'fp',None)
-            try:
-                self.fileName = self._image.fileName
-            except AttributeError:
-                self.fileName = 'PILIMAGE_%d' % id(self)
-        else:
-            try:
-                from reportlab.rl_config import imageReaderFlags
-                if imageReaderFlags != 0:
-                    raise ValueError('imageReaderFlags values other than 0 are no longer supported; all images are interned now')
-                fp = open_for_read(fileName,'b')
-                if not isinstance(fp, BytesIO):
-                    tfp, fp = fp, BytesIO(fp.read())
-                    tfp.close()
-                    del tfp
-                self.fp = fp
-                self._image = self._read_image(self.fp)
-                self._image.fileName = fileName if isinstance(fileName,str) else repr(fileName)
-                self.check_pil_image_size(self._image)
-                if getattr(self._image,'format',None)=='JPEG':
-                    self.jpeg_fh = self._jpeg_fh
-            except:
-                annotateException('\nfileName=%r identity=%s'%(fileName,self.identity()))
+# class ImageReader:
+#     "Wraps up PIL to get data from bitmaps"
+#     _cache={}
+#     _max_image_size = None
+#     def __init__(self, fileName,ident=None):
+#         if isinstance(fileName,ImageReader):
+#             self.__dict__ = fileName.__dict__   #borgize
+#             return
+#         self._ident = ident
+#         #start wih lots of null private fields, to be populated by
+#         #the relevant engine.
+#         self.fileName = fileName
+#         self._image = None
+#         self._width = None
+#         self._height = None
+#         self._transparent = None
+#         self._data = None
+#         if _isPILImage(fileName):
+#             self._image = fileName
+#             self.fp = getattr(fileName,'fp',None)
+#             try:
+#                 self.fileName = self._image.fileName
+#             except AttributeError:
+#                 self.fileName = 'PILIMAGE_%d' % id(self)
+#         else:
+#             try:
+#                 from reportlab.rl_config import imageReaderFlags
+#                 if imageReaderFlags != 0:
+#                     raise ValueError('imageReaderFlags values other than 0 are no longer supported; all images are interned now')
+#                 fp = open_for_read(fileName,'b')
+#                 if not isinstance(fp, BytesIO):
+#                     tfp, fp = fp, BytesIO(fp.read())
+#                     tfp.close()
+#                     del tfp
+#                 self.fp = fp
+#                 self._image = self._read_image(self.fp)
+#                 self._image.fileName = fileName if isinstance(fileName,str) else repr(fileName)
+#                 self.check_pil_image_size(self._image)
+#                 if getattr(self._image,'format',None)=='JPEG':
+#                     self.jpeg_fh = self._jpeg_fh
+#             except:
+#                 annotateException('\nfileName=%r identity=%s'%(fileName,self.identity()))
 
-    def identity(self):
-        '''try to return information that will identify the instance'''
-        fn = self.fileName
-        if not isStr(fn):
-            fn = getattr(getattr(self,'fp',None),'name',None)
-        ident = self._ident
-        return '[%s@%s%s%s]' % (self.__class__.__name__,hex(id(self)),ident and (' ident=%r' % ident) or '',fn and (' filename=%r' % fn) or '')
+#     def identity(self):
+#         '''try to return information that will identify the instance'''
+#         fn = self.fileName
+#         if not isStr(fn):
+#             fn = getattr(getattr(self,'fp',None),'name',None)
+#         ident = self._ident
+#         return '[%s@%s%s%s]' % (self.__class__.__name__,hex(id(self)),ident and (' ident=%r' % ident) or '',fn and (' filename=%r' % fn) or '')
 
-    def _read_image(self,fp):
-        return Image.open(fp)
+#     def _read_image(self,fp):
+#         return Image.open(fp)
 
-    @classmethod
-    def check_pil_image_size(cls, im):
-        max_image_size = cls._max_image_size
-        if max_image_size is None: return
-        w, h = im.size
-        m = im.mode
-        size = max(1,((1 if m=='1' else 8*len(m))*w*h)>>3)
-        if size>max_image_size:
-            raise MemoryError('PIL %s %s x %s image would use %s > %s bytes'
-                                            %(m,w,h,size,max_image_size))
-    @classmethod
-    def set_max_image_size(cls,max_image_size=None):
-        cls._max_image_size = max_image_size
-        if max_image_size is not None:
-            from reportlab.rl_config import register_reset
-            register_reset(cls.set_max_image_size)
+#     @classmethod
+#     def check_pil_image_size(cls, im):
+#         max_image_size = cls._max_image_size
+#         if max_image_size is None: return
+#         w, h = im.size
+#         m = im.mode
+#         size = max(1,((1 if m=='1' else 8*len(m))*w*h)>>3)
+#         if size>max_image_size:
+#             raise MemoryError('PIL %s %s x %s image would use %s > %s bytes'
+#                                             %(m,w,h,size,max_image_size))
+#     @classmethod
+#     def set_max_image_size(cls,max_image_size=None):
+#         cls._max_image_size = max_image_size
+#         if max_image_size is not None:
+#             from reportlab.rl_config import register_reset
+#             register_reset(cls.set_max_image_size)
 
-    def _jpeg_fh(self):
-        fp = self.fp
-        fp.seek(0)
-        return fp
+#     def _jpeg_fh(self):
+#         fp = self.fp
+#         fp.seek(0)
+#         return fp
 
-    def jpeg_fh(self):
-        return None
+#     def jpeg_fh(self):
+#         return None
 
-    def getSize(self):
-        if (self._width is None or self._height is None):
-            self._width, self._height = self._image.size
-        return (self._width, self._height)
+#     def getSize(self):
+#         if (self._width is None or self._height is None):
+#             self._width, self._height = self._image.size
+#         return (self._width, self._height)
 
-    def getRGBData(self):
-        "Return byte array of RGB data as string"
-        try:
-            if self._data is None:
-                self._dataA = None
-                im = self._image
-                mode = self.mode = im.mode
-                if mode in ('LA','RGBA'):
-                    if getattr(Image,'VERSION','').startswith('1.1.7'):
-                        im.load()
-                    self._dataA = ImageReader(im.split()[3 if mode=='RGBA' else 1])
-                    nm = mode[:-1]
-                    im = im.convert(nm)
-                    self.mode = nm
-                elif mode not in ('L','RGB','CMYK'):
-                    if im.format=='PNG' and im.mode=='P' and 'transparency' in im.info:
-                        im = im.convert('RGBA')
-                        self._dataA = ImageReader(im.split()[3])
-                        im = im.convert('RGB')
-                    else:
-                        im = im.convert('RGB')
-                    self.mode = 'RGB'
-                self._data = (im.tobytes if hasattr(im, 'tobytes') else im.tostring)()  #make pillow and PIL both happy, for now
-            return self._data
-        except:
-            annotateException('\nidentity=%s'%self.identity())
+#     def getRGBData(self):
+#         "Return byte array of RGB data as string"
+#         try:
+#             if self._data is None:
+#                 self._dataA = None
+#                 im = self._image
+#                 mode = self.mode = im.mode
+#                 if mode in ('LA','RGBA'):
+#                     if getattr(Image,'VERSION','').startswith('1.1.7'):
+#                         im.load()
+#                     self._dataA = ImageReader(im.split()[3 if mode=='RGBA' else 1])
+#                     nm = mode[:-1]
+#                     im = im.convert(nm)
+#                     self.mode = nm
+#                 elif mode not in ('L','RGB','CMYK'):
+#                     if im.format=='PNG' and im.mode=='P' and 'transparency' in im.info:
+#                         im = im.convert('RGBA')
+#                         self._dataA = ImageReader(im.split()[3])
+#                         im = im.convert('RGB')
+#                     else:
+#                         im = im.convert('RGB')
+#                     self.mode = 'RGB'
+#                 self._data = (im.tobytes if hasattr(im, 'tobytes') else im.tostring)()  #make pillow and PIL both happy, for now
+#             return self._data
+#         except:
+#             annotateException('\nidentity=%s'%self.identity())
 
-    def getImageData(self):
-        width, height = self.getSize()
-        return width, height, self.getRGBData()
+#     def getImageData(self):
+#         width, height = self.getSize()
+#         return width, height, self.getRGBData()
 
-    def getTransparent(self):
-        if "transparency" in self._image.info:
-            transparency = self._image.info["transparency"] * 3
-            palette = self._image.palette
-            try:
-                palette = palette.palette
-            except:
-                try:
-                    palette = palette.data
-                except:
-                    return None
-            return palette[transparency:transparency+3]
-        else:
-            return None
+#     def getTransparent(self):
+#         if "transparency" in self._image.info:
+#             transparency = self._image.info["transparency"] * 3
+#             palette = self._image.palette
+#             try:
+#                 palette = palette.palette
+#             except:
+#                 try:
+#                     palette = palette.data
+#                 except:
+#                     return None
+#             return palette[transparency:transparency+3]
+#         else:
+#             return None
 
-class LazyImageReader(ImageReader): 
-    pass #now same as base class since we intern everything
+# class LazyImageReader(ImageReader): 
+#     pass #now same as base class since we intern everything
 
-def getImageData(imageFileName):
-    "Get width, height and RGB pixels from image file.  Wraps PIL"
-    try:
-        return imageFileName.getImageData()
-    except AttributeError:
-        return ImageReader(imageFileName).getImageData()
+# def getImageData(imageFileName):
+#     "Get width, height and RGB pixels from image file.  Wraps PIL"
+#     try:
+#         return imageFileName.getImageData()
+#     except AttributeError:
+#         return ImageReader(imageFileName).getImageData()
 
-class DebugMemo:
-    '''Intended as a simple report back encapsulator
+# class DebugMemo:
+#     '''Intended as a simple report back encapsulator
 
-    Typical usages:
+#     Typical usages:
         
-    1. To record error data::
+#     1. To record error data::
         
-        dbg = DebugMemo(fn='dbgmemo.dbg',myVar=value)
-        dbg.add(anotherPayload='aaaa',andagain='bbb')
-        dbg.dump()
+#         dbg = DebugMemo(fn='dbgmemo.dbg',myVar=value)
+#         dbg.add(anotherPayload='aaaa',andagain='bbb')
+#         dbg.dump()
 
-    2. To show the recorded info::
+#     2. To show the recorded info::
         
-        dbg = DebugMemo(fn='dbgmemo.dbg',mode='r')
-        dbg.load()
-        dbg.show()
+#         dbg = DebugMemo(fn='dbgmemo.dbg',mode='r')
+#         dbg.load()
+#         dbg.show()
 
-    3. To re-use recorded information::
+#     3. To re-use recorded information::
         
-        dbg = DebugMemo(fn='dbgmemo.dbg',mode='r')
-            dbg.load()
-        myTestFunc(dbg.payload('myVar'),dbg.payload('andagain'))
+#         dbg = DebugMemo(fn='dbgmemo.dbg',mode='r')
+#             dbg.load()
+#         myTestFunc(dbg.payload('myVar'),dbg.payload('andagain'))
 
-    In addition to the payload variables the dump records many useful bits
-    of information which are also printed in the show() method.
-    '''
-    def __init__(self,fn='rl_dbgmemo.dbg',mode='w',getScript=1,modules=(),capture_traceback=1, stdout=None, **kw):
-        import socket
-        self.fn = fn
-        if not stdout: 
-            self.stdout = sys.stdout
-        else:
-            if hasattr(stdout,'write'):
-                self.stdout = stdout
-            else:
-                self.stdout = open(stdout,'w')
-        if mode!='w': return
-        self.store = store = {}
-        if capture_traceback and sys.exc_info() != (None,None,None):
-            import traceback
-            s = BytesIO()
-            traceback.print_exc(None,s)
-            store['__traceback'] = s.getvalue()
-        cwd=os.getcwd()
-        lcwd = os.listdir(cwd)
-        pcwd = os.path.dirname(cwd)
-        lpcwd = pcwd and os.listdir(pcwd) or '???'
-        exed = os.path.abspath(os.path.dirname(sys.argv[0]))
-        project_version='???'
-        md=None
-        try:
-            import marshal
-            md=marshal.loads(__rl_loader__.get_data('meta_data.mar'))
-            project_version=md['project_version']
-        except:
-            pass
-        env = os.environ
-        K=list(env.keys())
-        K.sort()
-        store.update({  'gmt': time.asctime(time.gmtime(time.time())),
-                        'platform': sys.platform,
-                        'version': sys.version,
-                        'hexversion': hex(sys.hexversion),
-                        'executable': sys.executable,
-                        'exec_prefix': sys.exec_prefix,
-                        'prefix': sys.prefix,
-                        'path': sys.path,
-                        'argv': sys.argv,
-                        'cwd': cwd,
-                        'hostname': socket.gethostname(),
-                        'lcwd': lcwd,
-                        'lpcwd': lpcwd,
-                        'byteorder': sys.byteorder,
-                        'maxint': getattr(sys,'maxunicode','????'),
-                        'api_version': getattr(sys,'api_version','????'),
-                        'version_info': getattr(sys,'version_info','????'),
-                        'winver': getattr(sys,'winver','????'),
-                        'environment': '\n\t\t\t'.join(['']+['%s=%r' % (k,env[k]) for k in K]),
-                        '__rl_loader__': repr(__rl_loader__),
-                        'project_meta_data': md,
-                        'project_version': project_version,
-                        })
-        for M,A in (
-                (sys,('getwindowsversion','getfilesystemencoding')),
-                (os,('uname', 'ctermid', 'getgid', 'getuid', 'getegid',
-                    'geteuid', 'getlogin', 'getgroups', 'getpgrp', 'getpid', 'getppid',
-                    )),
-                ):
-            for a in A:
-                if hasattr(M,a):
-                    try:
-                        store[a] = getattr(M,a)()
-                    except:
-                        pass
-        if exed!=cwd:
-            try:
-                store.update({'exed': exed, 'lexed': os.listdir(exed),})
-            except:
-                pass
-        if getScript:
-            fn = os.path.abspath(sys.argv[0])
-            if os.path.isfile(fn):
-                try:
-                    store['__script'] = (fn,open(fn,'r').read())
-                except:
-                    pass
-        module_versions = {}
-        for n,m in sys.modules.items():
-            if n=='reportlab' or n=='rlextra' or n[:10]=='reportlab.' or n[:8]=='rlextra.':
-                v = [getattr(m,x,None) for x in ('__version__','__path__','__file__')]
-                if [_f for _f in v if _f]:
-                    v = [v[0]] + [_f for _f in v[1:] if _f]
-                    module_versions[n] = tuple(v)
-        store['__module_versions'] = module_versions
-        self.store['__payload'] = {}
-        self._add(kw)
+#     In addition to the payload variables the dump records many useful bits
+#     of information which are also printed in the show() method.
+#     '''
+#     def __init__(self,fn='rl_dbgmemo.dbg',mode='w',getScript=1,modules=(),capture_traceback=1, stdout=None, **kw):
+#         import socket
+#         self.fn = fn
+#         if not stdout: 
+#             self.stdout = sys.stdout
+#         else:
+#             if hasattr(stdout,'write'):
+#                 self.stdout = stdout
+#             else:
+#                 self.stdout = open(stdout,'w')
+#         if mode!='w': return
+#         self.store = store = {}
+#         if capture_traceback and sys.exc_info() != (None,None,None):
+#             import traceback
+#             s = BytesIO()
+#             traceback.print_exc(None,s)
+#             store['__traceback'] = s.getvalue()
+#         cwd=os.getcwd()
+#         lcwd = os.listdir(cwd)
+#         pcwd = os.path.dirname(cwd)
+#         lpcwd = pcwd and os.listdir(pcwd) or '???'
+#         exed = os.path.abspath(os.path.dirname(sys.argv[0]))
+#         project_version='???'
+#         md=None
+#         try:
+#             import marshal
+#             md=marshal.loads(__rl_loader__.get_data('meta_data.mar'))
+#             project_version=md['project_version']
+#         except:
+#             pass
+#         env = os.environ
+#         K=list(env.keys())
+#         K.sort()
+#         store.update({  'gmt': time.asctime(time.gmtime(time.time())),
+#                         'platform': sys.platform,
+#                         'version': sys.version,
+#                         'hexversion': hex(sys.hexversion),
+#                         'executable': sys.executable,
+#                         'exec_prefix': sys.exec_prefix,
+#                         'prefix': sys.prefix,
+#                         'path': sys.path,
+#                         'argv': sys.argv,
+#                         'cwd': cwd,
+#                         'hostname': socket.gethostname(),
+#                         'lcwd': lcwd,
+#                         'lpcwd': lpcwd,
+#                         'byteorder': sys.byteorder,
+#                         'maxint': getattr(sys,'maxunicode','????'),
+#                         'api_version': getattr(sys,'api_version','????'),
+#                         'version_info': getattr(sys,'version_info','????'),
+#                         'winver': getattr(sys,'winver','????'),
+#                         'environment': '\n\t\t\t'.join(['']+['%s=%r' % (k,env[k]) for k in K]),
+#                         '__rl_loader__': repr(__rl_loader__),
+#                         'project_meta_data': md,
+#                         'project_version': project_version,
+#                         })
+#         for M,A in (
+#                 (sys,('getwindowsversion','getfilesystemencoding')),
+#                 (os,('uname', 'ctermid', 'getgid', 'getuid', 'getegid',
+#                     'geteuid', 'getlogin', 'getgroups', 'getpgrp', 'getpid', 'getppid',
+#                     )),
+#                 ):
+#             for a in A:
+#                 if hasattr(M,a):
+#                     try:
+#                         store[a] = getattr(M,a)()
+#                     except:
+#                         pass
+#         if exed!=cwd:
+#             try:
+#                 store.update({'exed': exed, 'lexed': os.listdir(exed),})
+#             except:
+#                 pass
+#         if getScript:
+#             fn = os.path.abspath(sys.argv[0])
+#             if os.path.isfile(fn):
+#                 try:
+#                     store['__script'] = (fn,open(fn,'r').read())
+#                 except:
+#                     pass
+#         module_versions = {}
+#         for n,m in sys.modules.items():
+#             if n=='reportlab' or n=='rlextra' or n[:10]=='reportlab.' or n[:8]=='rlextra.':
+#                 v = [getattr(m,x,None) for x in ('__version__','__path__','__file__')]
+#                 if [_f for _f in v if _f]:
+#                     v = [v[0]] + [_f for _f in v[1:] if _f]
+#                     module_versions[n] = tuple(v)
+#         store['__module_versions'] = module_versions
+#         self.store['__payload'] = {}
+#         self._add(kw)
 
-    def _add(self,D):
-        payload = self.store['__payload']
-        for k, v in D.items():
-            payload[k] = v
+#     def _add(self,D):
+#         payload = self.store['__payload']
+#         for k, v in D.items():
+#             payload[k] = v
 
-    def add(self,**kw):
-        self._add(kw)
+#     def add(self,**kw):
+#         self._add(kw)
 
-    def _dump(self,f):
-        try:
-            pos=f.tell()
-            pickle.dump(self.store,f)
-        except:
-            S=self.store.copy()
-            ff=BytesIO()
-            for k,v in S.items():
-                try:
-                    pickle.dump({k:v},ff)
-                except:
-                    S[k] = '<unpicklable object %r>' % v
-            f.seek(pos,0)
-            pickle.dump(S,f)
+#     def _dump(self,f):
+#         try:
+#             pos=f.tell()
+#             pickle.dump(self.store,f)
+#         except:
+#             S=self.store.copy()
+#             ff=BytesIO()
+#             for k,v in S.items():
+#                 try:
+#                     pickle.dump({k:v},ff)
+#                 except:
+#                     S[k] = '<unpicklable object %r>' % v
+#             f.seek(pos,0)
+#             pickle.dump(S,f)
 
-    def dump(self):
-        f = open(self.fn,'wb')
-        try:
-            self._dump(f)
-        finally:
-            f.close()
+#     def dump(self):
+#         f = open(self.fn,'wb')
+#         try:
+#             self._dump(f)
+#         finally:
+#             f.close()
 
-    def dumps(self):
-        f = BytesIO()
-        self._dump(f)
-        return f.getvalue()
+#     def dumps(self):
+#         f = BytesIO()
+#         self._dump(f)
+#         return f.getvalue()
 
-    def _load(self,f):
-        self.store = pickle.load(f)
+#     def _load(self,f):
+#         self.store = pickle.load(f)
 
-    def load(self):
-        f = open(self.fn,'rb')
-        try:
-            self._load(f)
-        finally:
-            f.close()
+#     def load(self):
+#         f = open(self.fn,'rb')
+#         try:
+#             self._load(f)
+#         finally:
+#             f.close()
 
-    def loads(self,s):
-        self._load(BytesIO(s))
+#     def loads(self,s):
+#         self._load(BytesIO(s))
 
-    def _show_module_versions(self,k,v):
-        self._writeln(k[2:])
-        K = list(v.keys())
-        K.sort()
-        for k in K:
-            vk = vk0 = v[k]
-            if isinstance(vk,tuple): vk0 = vk[0]
-            try:
-                __import__(k)
-                m = sys.modules[k]
-                d = getattr(m,'__version__',None)==vk0 and 'SAME' or 'DIFFERENT'
-            except:
-                m = None
-                d = '??????unknown??????'
-            self._writeln('  %s = %s (%s)' % (k,vk,d))
+#     def _show_module_versions(self,k,v):
+#         self._writeln(k[2:])
+#         K = list(v.keys())
+#         K.sort()
+#         for k in K:
+#             vk = vk0 = v[k]
+#             if isinstance(vk,tuple): vk0 = vk[0]
+#             try:
+#                 __import__(k)
+#                 m = sys.modules[k]
+#                 d = getattr(m,'__version__',None)==vk0 and 'SAME' or 'DIFFERENT'
+#             except:
+#                 m = None
+#                 d = '??????unknown??????'
+#             self._writeln('  %s = %s (%s)' % (k,vk,d))
 
-    def _banner(self,k,what):
-        self._writeln('###################%s %s##################' % (what,k[2:]))
+#     def _banner(self,k,what):
+#         self._writeln('###################%s %s##################' % (what,k[2:]))
 
-    def _start(self,k):
-        self._banner(k,'Start  ')
+#     def _start(self,k):
+#         self._banner(k,'Start  ')
 
-    def _finish(self,k):
-        self._banner(k,'Finish ')
+#     def _finish(self,k):
+#         self._banner(k,'Finish ')
 
-    def _show_lines(self,k,v):
-        self._start(k)
-        self._writeln(v)
-        self._finish(k)
+#     def _show_lines(self,k,v):
+#         self._start(k)
+#         self._writeln(v)
+#         self._finish(k)
 
-    def _show_file(self,k,v):
-        k = '%s %s' % (k,os.path.basename(v[0]))
-        self._show_lines(k,v[1])
+#     def _show_file(self,k,v):
+#         k = '%s %s' % (k,os.path.basename(v[0]))
+#         self._show_lines(k,v[1])
 
-    def _show_payload(self,k,v):
-        if v:
-            import pprint
-            self._start(k)
-            pprint.pprint(v,self.stdout)
-            self._finish(k)
+#     def _show_payload(self,k,v):
+#         if v:
+#             import pprint
+#             self._start(k)
+#             pprint.pprint(v,self.stdout)
+#             self._finish(k)
 
-    def _show_extensions(self):
-        for mn in ('_rl_accel','_renderPM','sgmlop','pyRXP','pyRXPU','_imaging','Image'):
-            try:
-                A = [mn].append
-                __import__(mn)
-                m = sys.modules[mn]
-                A(m.__file__)
-                for vn in ('__version__','VERSION','_version','version'):
-                    if hasattr(m,vn):
-                        A('%s=%r' % (vn,getattr(m,vn)))
-            except:
-                A('not found')
-            self._writeln(' '+' '.join(A.__self__))
+#     def _show_extensions(self):
+#         for mn in ('_rl_accel','_renderPM','sgmlop','pyRXP','pyRXPU','_imaging','Image'):
+#             try:
+#                 A = [mn].append
+#                 __import__(mn)
+#                 m = sys.modules[mn]
+#                 A(m.__file__)
+#                 for vn in ('__version__','VERSION','_version','version'):
+#                     if hasattr(m,vn):
+#                         A('%s=%r' % (vn,getattr(m,vn)))
+#             except:
+#                 A('not found')
+#             self._writeln(' '+' '.join(A.__self__))
 
-    specials = {'__module_versions': _show_module_versions,
-                '__payload': _show_payload,
-                '__traceback': _show_lines,
-                '__script': _show_file,
-                }
-    def show(self):
-        K = list(self.store.keys())
-        K.sort()
-        for k in K:
-            if k not in list(self.specials.keys()): self._writeln('%-15s = %s' % (k,self.store[k]))
-        for k in K:
-            if k in list(self.specials.keys()): self.specials[k](self,k,self.store[k])
-        self._show_extensions()
+#     specials = {'__module_versions': _show_module_versions,
+#                 '__payload': _show_payload,
+#                 '__traceback': _show_lines,
+#                 '__script': _show_file,
+#                 }
+#     def show(self):
+#         K = list(self.store.keys())
+#         K.sort()
+#         for k in K:
+#             if k not in list(self.specials.keys()): self._writeln('%-15s = %s' % (k,self.store[k]))
+#         for k in K:
+#             if k in list(self.specials.keys()): self.specials[k](self,k,self.store[k])
+#         self._show_extensions()
 
-    def payload(self,name):
-        return self.store['__payload'][name]
+#     def payload(self,name):
+#         return self.store['__payload'][name]
 
-    def __setitem__(self,name,value):
-        self.store['__payload'][name] = value
+#     def __setitem__(self,name,value):
+#         self.store['__payload'][name] = value
 
-    def __getitem__(self,name):
-        return self.store['__payload'][name]
+#     def __getitem__(self,name):
+#         return self.store['__payload'][name]
 
-    def _writeln(self,msg):
-        self.stdout.write(msg+'\n')
+#     def _writeln(self,msg):
+#         self.stdout.write(msg+'\n')
 
 def _flatten(L,a):
     for x in L:
@@ -1074,16 +1074,16 @@ def escapeTextOnce(text):
     text = text.replace(u'&amp;lt;', u'&lt;')
     return text
 
-def fileName2FSEnc(fn):
-    if isUnicode(fn):
-        return  fn
-    else:
-        for enc in fsEncodings:
-            try:
-                return fn.decode(enc)
-            except:
-                pass
-    raise ValueError('cannot convert %r to filesystem encoding' % fn)
+# def fileName2FSEnc(fn):
+#     if isUnicode(fn):
+#         return  fn
+#     else:
+#         # for enc in fsEncodings:
+#         #     try:
+#         #         return fn.decode(enc)
+#         #     except:
+#         #         pass
+#     raise ValueError('cannot convert %r to filesystem encoding' % fn)
 
 import itertools
 def prev_this_next(items):
