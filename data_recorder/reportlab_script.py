@@ -1,18 +1,13 @@
 import io, os
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch, mm, cm
-from reportlab.lib.testutils import testsFolder
-from reportlab.lib.pagesizes import letter, A4, A3, A2
+from reportlab.lib.pagesizes import letter, A4
 from reportlab import rl_config
 from .models import Post
-from urllib import response
-from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponse
-from reportlab.graphics import renderPDF
 from reportlab.lib.colors import *
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.pdfbase.pdfmetrics import Font
 
 
 class Report:
