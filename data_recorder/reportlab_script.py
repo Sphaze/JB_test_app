@@ -1,14 +1,11 @@
 import io, os
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch, mm, cm
-from reportlab.lib.pagesizes import letter, A4
-from reportlab import rl_config
+from reportlab.lib.pagesizes import A4
 from .models import Post
 from django.conf import settings
 from django.http import HttpResponse
 from reportlab.lib.colors import *
-from reportlab.lib.styles import getSampleStyleSheet
-
 
 class Report:
 
@@ -19,8 +16,7 @@ class Report:
         self.width, self.height = self.pagesize
         self.buffer = io.BytesIO()
         self.c = self.createCanvas(self.buffer)
-        self.styles = getSampleStyleSheet()
-
+   
 
     def createCanvas(self, buffer):           
         myCanvas = canvas.Canvas(buffer, self.pagesize, bottomup=0)
@@ -58,8 +54,7 @@ class Report:
         heading_fontsize = 9
         answer_font = "Helvetica-Bold"
         answer_fontsize = 11
-
-      
+    
         ### left column ###
         ''' heading blob '''
         textobject = self.c.beginText()
@@ -327,14 +322,6 @@ class Report:
             canvas.grid([0,5*u,10*u,15*u], [0,5*u,10*u])
 
 
-    def coord(self, x, y, unit):
-      
-        x = x * unit
-        y = self.height -  y * unit
-        return x, y
-
-       
-
     def getBuffer(self):  
         self.page_one(pagenumber=1) 
         self.page_two(pagenumber=2) 
@@ -346,7 +333,6 @@ class Report:
         return self.buffer
 
     
-
     def generate(request):
 
         doc = Report("report.pdf")
@@ -357,16 +343,3 @@ class Report:
         
         return response
 
-
-
-
-#  debugging aid:
-# 'function' object has no attribute 'get'....this error usually means a function is missing parenthesis when it's returned
-#  build() takes 1 positional argument but 2 were given....this error usually means that there should be zero or one less arguments in the function call for "build" function
-#  The view didn't return an HttpResponse object....this error means that the function isn't returning anything and nothing is being accessed because of this
-# 'NoneType' object has no attribute....this error means that one function isn't returning anything, and another function isn't working because of that
-#  build() takes 0 positional arguments but 1 was given.... this error usually means that you're missing a "self" parameter in one or more function calls (or in the function itself). Relate the data with self.build() instead of [Class Name].build()...this error can also mean that the function needs at least one parameter instead of none.
-#  TypeError at /report_pdf, 'method' object is not iterable.... this error means that a function reference is returned, and not the actual function (self.function() should be used with the parenthesis instead of self.function)
-#  UnboundLocalError at /report_pdf, local variable 'canvas' referenced before assignment.... this error could mean that you're defining a variable name with a variable name already used in a library, for example "canvas = canvas.Canvas", change it to "myCanvas = canvas.Canvas"
-       
-        
