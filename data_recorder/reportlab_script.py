@@ -1,5 +1,4 @@
 import io, os
-from tkinter import MITER
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch, mm, cm
 from reportlab.lib.testutils import testsFolder
@@ -7,7 +6,6 @@ from reportlab.lib.pagesizes import letter, A4, A3, A2
 from reportlab import rl_config
 from .models import Post
 from urllib import response
-from reportlab.platypus import SimpleDocTemplate, Table, Paragraph, tables, Image, Spacer, Frame
 from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponse
@@ -17,13 +15,11 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase.pdfmetrics import Font
 
 
-
 class Report:
 
     def __init__(self, filename):   
 
-        self.filename = filename
-        self.elements = []         
+        self.filename = filename        
         self.pagesize = A4
         self.width, self.height = self.pagesize
         self.buffer = io.BytesIO()
