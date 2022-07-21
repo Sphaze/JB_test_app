@@ -192,12 +192,12 @@ class Report:
 
         '''convert ISO timestring (2022-07-13 11:53:52+00:00) to date with desired format '''
 
-        NCR_date = str(str(data.date_posted)[8:10]) +'/'+str(str(data.date_posted)[5:7])+'/'+str(str(data.date_posted)[0:4])
+       # NCR_date = str(str(data.date_posted)[8:10]) +'/'+str(str(data.date_posted)[5:7])+'/'+str(str(data.date_posted)[0:4])
     
         '''answers'''
 
-        b1 = str(data.ncr_number)
-        b2 = NCR_date
+        b1 = "A20109" #str(data.ncr_number)
+        b2 = "13/07/2022"
         b3 = "This is test text"
         b4 = "This is test text"
         b5 = "This is test text"
