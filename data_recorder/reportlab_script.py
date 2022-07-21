@@ -36,7 +36,7 @@ class Report:
 
 
     def page_one(self, pagenumber):      
-        logo = os.path.join(settings.STATIC_ROOT,"img/logo_1.PNG")
+        logo = os.path.join(settings.STATIC_ROOT,"img/logo_1.jpg")
         logoX = (self.height/2) + 2.5*cm
         logoY = (self.width/2) - 4*inch + 1.5*cm
 
