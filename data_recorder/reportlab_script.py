@@ -12,7 +12,7 @@ class Report:
     def __init__(self, filename):   
 
         self.filename = filename        
-        self.pagesize = letter
+        self.pagesize = A4
         self.width, self.height = self.pagesize
         self.buffer = io.BytesIO()
         self.c = self.createCanvas(self.buffer)
