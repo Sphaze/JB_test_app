@@ -1,7 +1,7 @@
 import io, os
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch, mm, cm
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.pagesizes import A4, letter
 from .models import Post
 from django.conf import settings
 from django.http import HttpResponse
@@ -35,13 +35,19 @@ class Report:
 
 
 
-    def page_one(self, pagenumber):      
-        logo = os.path.join(settings.STATIC_ROOT,"img/logo_1.jpg")
-        logoX = (self.height/2) + 2.5*cm
-        logoY = (self.width/2) - 4*inch + 1.5*cm
+    def page_one(self, pagenumber):   
+     
+        logo1 = os.path.join(settings.STATIC_ROOT,"img/jandb_logo.jpg")       
+        logoX = (self.width/2) + 2*inch - 1*mm
+        logoY = 3.38 * inch
+        logoSize = 120
+        self.c.saveState()
+        self.c.scale(1,-1)
+        self.c.drawInlineImage(logo1, width=logoSize, x=logoX, y=-logoY, preserveAspectRatio=True)
+        self.c.restoreState()
 
-        self.c.drawImage(logo, width=56, x=logoX, y=logoY, preserveAspectRatio=True, mask='auto')
        
+
         lineStart = 1*cm
         lineEnd = self.width - inch + 1.05*cm
         line_Y = 2*inch - 20
@@ -123,20 +129,6 @@ class Report:
         textobject.setFont(answer_font, answer_fontsize)
         textobject.textLine("placeholder")
         self.c.drawText(textobject)
-        ''' heading blob '''
-        textobject = self.c.beginText()
-        textobject.setTextOrigin(1.3*cm, 2*inch+3*cm)
-        textobject.moveCursor(3*inch,0)
-        textobject.setFont(heading_font, heading_fontsize)
-        textobject.textLine("Order Time:")
-        self.c.drawText(textobject)
-        ''' answer blob '''
-        textobject = self.c.beginText()
-        textobject.setTextOrigin(1.3*cm, 2*inch+3.5*cm+2*mm)
-        textobject.moveCursor(3*inch,0)   
-        textobject.setFont(answer_font, answer_fontsize)
-        textobject.textLine("placeholder")
-        self.c.drawText(textobject)
 
 
         ### right column ###
@@ -179,15 +171,14 @@ class Report:
         a3 = "Advice Number:"
         a4 = "Job Reference Number:"
         a5 = "Status:"
-        a6 = "Audit ID:"
-        a7 = "Non Conformance Code:"
-        a8 = "Company:"
-        a9 = "Site:"
-        a10 = "Severity:"
-        a11 = "Person responsible:"
-        a12 = "NCR Status:"
-        a13 = "Target completion date:"
-        a14 = "Date of completion:"
+        a6 = "Non Conformance Code:"
+        a7 = "Company:"
+        a8 = "Site:"
+        a9 = "Severity:"
+        a10 = "Person responsible:"
+        a11 = "NCR Status:"
+        a12 = "Target completion date:"
+        a13 = "Date of completion:"
 
         '''convert ISO timestring (2022-07-13 11:53:52+00:00) to date with desired format '''
 
@@ -196,7 +187,7 @@ class Report:
         '''answers'''
 
         b1 = "A20109" #str(data.ncr_number)
-        b2 = "13/07/2022"
+        b2 = "13/07/2022" # NCR_date
         b3 = "This is test text"
         b4 = "This is test text"
         b5 = "This is test text"
@@ -208,11 +199,11 @@ class Report:
         b11 = "This is test text"
         b12 = "This is test text"
         b13 = "This is test text"
-        b14 = "This is test text"
+     
 
         # tuples containing the data for the text objects
-        headings = (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14)
-        answers = (b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14)
+        headings = (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13)
+        answers = (b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13)
         
         # summary title
         textobject = self.c.beginText() 
@@ -249,77 +240,37 @@ class Report:
     def page_two(self, pagenumber):           
         self.c.showPage()
         self.c.saveState()
-        self.c.scale(0.7,0.7)
-        self.pencil(self.c, "Description")
-        self.c.scale(1.43,1.43)
-        self.c.rect(1.6*cm,inch,7*inch,9*inch, fill=0)
+        self.c.setFont('Times-Bold',16)
+        self.c.drawString(self.width/2 - 3.5*inch, self.height/2 - 5*inch, "Description")
+        self.c.setLineWidth(0.1) 
+        self.c.rect(1.6*cm,inch,7*inch,9*inch, stroke=1, fill=0)
+        self.c.setLineWidth(1)
         self.c.restoreState()
         self.includeFooter(pagenumber)
 
     
     def page_three(self, pagenumber):       
         self.c.showPage()
-        self.c.setFont('Helvetica-Bold',16)
+        self.c.saveState()
+        self.c.setFont('Times-Bold',16)
         self.c.drawString(self.width/2 - 3.5*inch, self.height/2 - 5*inch, "Related media")
-        self.c.rect(1.6*cm,inch,7*inch,9*inch, fill=0)
+        self.c.setLineWidth(0.1) 
+        self.c.rect(1.6*cm,inch,7*inch,9*inch, stroke=1, fill=0)
+        self.c.setLineWidth(1)
+        self.c.restoreState()
         self.includeFooter(pagenumber)
 
 
     def page_four(self, pagenumber):        
         self.c.showPage()
         self.c.saveState()
-        self.c.scale(0.7,0.7)
-        self.pencil(self.c, "Comments")
-        self.c.scale(1.43,1.43)
-        self.c.rect(1.6*cm,inch,7*inch,9*inch, fill=0)
+        self.c.setFont('Times-Italic',18)
+        self.c.drawString(self.width/2 - 3.5*inch, self.height/2 - 5*inch, "Comments")
+        self.c.setLineWidth(0.1) 
+        self.c.rect(1.6*cm,inch,7*inch,9*inch, stroke=1, fill=0)
+        self.c.setLineWidth(1)
         self.c.restoreState()
         self.includeFooter(pagenumber)
-
-
-
-    def pencil(self,canvas, text):
-        u = inch/10
-
-        canvas._leading = 200
-        canvas.setStrokeColor(black)
-        canvas.setFillColor(red)
-        canvas.circle(30*u, 5*u, 5*u, stroke=1, fill=1)
-        canvas.setFillColor(beige)
-        canvas.rect(10*u,0,20*u,10*u, stroke=1, fill=1)
-        canvas.setFillColor(black)
-        canvas.setFont("Helvetica-Bold", 20)
-        canvas.drawCentredString(2*inch-1, inch-25, text) 
-        self.penciltip(canvas,debug=0)
-        canvas.setDash([10,5,16,10],0)
-
-
-    def penciltip(self, canvas, debug=1):
-        u = inch/10.0
-
-        if debug:
-            canvas.scale(2.8,2.8)
-            canvas.setLineWidth(0.25) # small lines
-        canvas.setStrokeColor(black)
-        canvas.setFillColor(tan)
-        p = canvas.beginPath()
-        p.moveTo(10*u,0)
-        p.lineTo(0,5*u)
-        p.lineTo(10*u,10*u)
-        p.curveTo(11.5*u,10*u, 11.5*u,7.5*u, 10*u,7.5*u)
-        p.curveTo(12*u,7.5*u, 11*u,2.5*u, 9.7*u,2.5*u)
-        p.curveTo(10.5*u,2.5*u, 11*u,0, 10*u,0)
-        canvas.drawPath(p, stroke=1, fill=1)
-        canvas.setFillColor(black)
-        p = canvas.beginPath()
-        p.moveTo(0,5*u)
-        p.lineTo(4*u,3*u)
-        p.lineTo(5*u,4.5*u)
-        p.lineTo(3*u,6.5*u)
-        canvas.drawPath(p, stroke=1, fill=1)
-        if debug:
-            canvas.setStrokeColor(green) # put in a frame of reference
-            canvas.grid([0,5*u,10*u,15*u], [0,5*u,10*u])
-
 
     def getBuffer(self):  
         self.page_one(pagenumber=1) 
