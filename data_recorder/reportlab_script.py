@@ -1,11 +1,15 @@
 import io, os
+from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch, mm, cm
-from reportlab.lib.pagesizes import A4, letter
+from reportlab.lib.pagesizes import A4
 from .models import Post
 from django.conf import settings
 from django.http import HttpResponse
+from reportlab.platypus import Paragraph, Frame
+from reportlab.platypus.flowables import TopPadder
 from reportlab.lib.colors import *
+from reportlab.lib.enums import *
 
 class Report:
 
@@ -15,8 +19,9 @@ class Report:
         self.pagesize = A4
         self.width, self.height = self.pagesize
         self.buffer = io.BytesIO()
+        self.styles = getSampleStyleSheet()
         self.c = self.createCanvas(self.buffer)
-   
+  
 
     def createCanvas(self, buffer):           
         myCanvas = canvas.Canvas(buffer, self.pagesize, bottomup=0)
@@ -30,23 +35,22 @@ class Report:
         self.c.setFont("Times-Roman", 8)    
         self.c.drawString(1.1*cm, footer_line_h+10, "Report:")
         self.c.drawString(inch, footer_line_h+10, "NCR Report")
-        self.c.drawString(4.5*inch+cm, footer_line_h+10, "TUS University\u2122")
+        self.c.drawString(4.5*inch+cm, footer_line_h+10, "sPhAzE\u2122")
         self.c.drawString(7*inch+7*mm, footer_line_h+10, "Page %d" % pageNumber)
 
 
 
     def page_one(self, pagenumber):   
      
-        logo1 = os.path.join(settings.STATIC_ROOT,"img/jandb_logo.jpg")       
+        logo = os.path.join(settings.STATIC_ROOT,"img/jandb_logo.jpg")       
         logoX = (self.width/2) + 2*inch - 1*mm
         logoY = 3.38 * inch
         logoSize = 120
         self.c.saveState()
         self.c.scale(1,-1)
-        self.c.drawInlineImage(logo1, width=logoSize, x=logoX, y=-logoY, preserveAspectRatio=True)
+        self.c.drawInlineImage(logo, width=logoSize, x=logoX, y=-logoY, preserveAspectRatio=True)
         self.c.restoreState()
 
-       
 
         lineStart = 1*cm
         lineEnd = self.width - inch + 1.05*cm
@@ -240,11 +244,18 @@ class Report:
     def page_two(self, pagenumber):           
         self.c.showPage()
         self.c.saveState()
-        self.c.setFont('Times-Bold',16)
+        self.c.setFont('Times-Roman',16)
         self.c.drawString(self.width/2 - 3.5*inch, self.height/2 - 5*inch, "Description")
         self.c.setLineWidth(0.1) 
-        self.c.rect(1.6*cm,inch,7*inch,9*inch, stroke=1, fill=0)
-        self.c.setLineWidth(1)
+        self.c.rotate(360)
+        text = "It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts." 
+        framedata = []
+        frame = Frame(1.6*cm, inch, 7*inch, 9*inch, topPadding = 0, bottomPadding = 3*mm, leftPadding=3*mm, showBoundary=1)
+        frame.addFromList(framedata, self.c)
+        textstyle = self.styles['Normal']
+        p = Paragraph(text, textstyle)
+        framedata.append(TopPadder(p))
+        frame.addFromList(framedata, self.c)
         self.c.restoreState()
         self.includeFooter(pagenumber)
 
@@ -252,11 +263,10 @@ class Report:
     def page_three(self, pagenumber):       
         self.c.showPage()
         self.c.saveState()
-        self.c.setFont('Times-Bold',16)
+        self.c.setFont('Times-Roman',16)
         self.c.drawString(self.width/2 - 3.5*inch, self.height/2 - 5*inch, "Related media")
         self.c.setLineWidth(0.1) 
         self.c.rect(1.6*cm,inch,7*inch,9*inch, stroke=1, fill=0)
-        self.c.setLineWidth(1)
         self.c.restoreState()
         self.includeFooter(pagenumber)
 
@@ -264,11 +274,17 @@ class Report:
     def page_four(self, pagenumber):        
         self.c.showPage()
         self.c.saveState()
-        self.c.setFont('Times-Roman',18)
+        self.c.setFont('Times-Roman',16)
         self.c.drawString(self.width/2 - 3.5*inch, self.height/2 - 5*inch, "Comments")
         self.c.setLineWidth(0.1) 
-        self.c.rect(1.6*cm,inch,7*inch,9*inch, stroke=1, fill=0)
-        self.c.setLineWidth(1)
+        framedata = []
+        frame = Frame(1.6*cm, inch, 7*inch, 9*inch, bottomPadding=6*mm, leftPadding=3*mm, showBoundary=1)
+        frame.addFromList(framedata, self.c)
+        text = "Far far away, behind the word mountains.... "
+        textstyle = self.styles['Normal']
+        p = Paragraph(text, textstyle)
+        framedata.append(TopPadder(p))
+        frame.addFromList(framedata, self.c)
         self.c.restoreState()
         self.includeFooter(pagenumber)
 
