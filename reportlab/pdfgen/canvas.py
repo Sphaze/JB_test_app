@@ -202,13 +202,6 @@ class   ExtGState:
         x._c = self._c
         return x
 
-def _gradientExtendStr(extend):
-    if isinstance(extend,(list,tuple)):
-        if len(extend)!=2:
-            raise ValueError('wrong length for extend argument' % extend)
-        return "[%s %s]" % ['true' if _ else 'false' for _ in extend]
-    return "[true true]" if extend else "[false false]"
-
 class Canvas(_PDFColorSetter):
     """This class is the programmer's interface to the PDF file format.  Methods
     are (or will be) provided here to do just about everything PDF can do.
@@ -1010,8 +1003,7 @@ class Canvas(_PDFColorSetter):
         self._code.append("/%s Do" % regName)
         self.restoreState()
         if showBoundary:
-            #self.rect(x,y,width,height,stroke=1,fill=0)
-            self.drawBoundary(showBoundary,x,y,width,height)
+            self.rect(x,y,width,height,stroke=1,fill=0)
 
         # track what's been used on this page
         self._formsinuse.append(name)
@@ -1565,8 +1557,12 @@ class Canvas(_PDFColorSetter):
         from reportlab.pdfbase.pdfdoc import PDFAxialShading
         colorSpace, ncolors = _normalizeColors(colors)
         fcn = _buildColorFunction(ncolors, positions)
+        if extend:
+            extendStr = "[true true]"
+        else:
+            extendStr = "[false false]"
         shading = PDFAxialShading(x0, y0, x1, y1, Function=fcn,
-                ColorSpace=colorSpace, Extend=_gradientExtendStr(extend))
+                ColorSpace=colorSpace, Extend=extendStr)
         self.shade(shading)
 
     def radialGradient(self, x, y, radius, colors, positions=None, extend=True):
@@ -1574,8 +1570,12 @@ class Canvas(_PDFColorSetter):
         from reportlab.pdfbase.pdfdoc import PDFRadialShading
         colorSpace, ncolors = _normalizeColors(colors)
         fcn = _buildColorFunction(ncolors, positions)
+        if extend:
+            extendStr = "[true true]"
+        else:
+            extendStr = "[false false]"
         shading = PDFRadialShading(x, y, 0.0, x, y, radius, Function=fcn,
-                ColorSpace=colorSpace, Extend=_gradientExtendStr(extend))
+                ColorSpace=colorSpace, Extend=extendStr)
         self.shade(shading)
 
         ##################################################
