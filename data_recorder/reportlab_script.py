@@ -28,20 +28,39 @@ class Report:
         return myCanvas
 
 
-    def includeFooter(self, pageNumber):      
-          
+    def getBuffer(self):  
+        self.page_one(pagenumber=1) 
+        self.page_two(pagenumber=2) 
+        self.page_three(pagenumber=3) 
+        self.page_four(pagenumber=4) 
+        self.c.save() #save the canvas
+        self.buffer.seek(0)
+       
+        return self.buffer
+
+    
+    def generate(request):
+        doc = Report("report.pdf")
+        response = HttpResponse()
+        response.content = doc.getBuffer()
+        response.headers['Content-Disposition'] = 'inline; filename=' + doc.filename
+        response.headers['Content-Type'] = 'application/pdf'
+        
+        return response
+
+
+    def includeFooter(self, pageNumber):                
         footer_line_h = self.height-60   
         self.c.line(cm, footer_line_h, self.width - inch + 1.05*cm, footer_line_h) 
         self.c.setFont("Times-Roman", 8)    
         self.c.drawString(1.1*cm, footer_line_h+10, "Report:")
         self.c.drawString(inch, footer_line_h+10, "NCR Report")
-        self.c.drawString(4.5*inch+cm, footer_line_h+10, "sPhAzE\u2122")
+        self.c.drawString(4.5*inch+cm, footer_line_h+10, "https://github.com/Sphaze/")
         self.c.drawString(7*inch+7*mm, footer_line_h+10, "Page %d" % pageNumber)
 
 
 
     def page_one(self, pagenumber):   
-     
         logo = os.path.join(settings.STATIC_ROOT,"img/jandb_logo.jpg")       
         logoX = (self.width/2) + 2*inch - 1*mm
         logoY = 3.38 * inch
@@ -288,24 +307,6 @@ class Report:
         self.c.restoreState()
         self.includeFooter(pagenumber)
 
-    def getBuffer(self):  
-        self.page_one(pagenumber=1) 
-        self.page_two(pagenumber=2) 
-        self.page_three(pagenumber=3) 
-        self.page_four(pagenumber=4) 
-        self.c.save() #save the canvas
-        self.buffer.seek(0)
-       
-        return self.buffer
+ 
 
     
-    def generate(request):
-
-        doc = Report("report.pdf")
-        response = HttpResponse()
-        response.content = doc.getBuffer()
-        response.headers['Content-Disposition'] = 'inline; filename=' + doc.filename
-        response.headers['Content-Type'] = 'application/pdf'
-        
-        return response
-
