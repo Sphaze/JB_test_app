@@ -264,7 +264,7 @@ class Report:
     def page_four(self, pagenumber):        
         self.c.showPage()
         self.c.saveState()
-        self.c.setFont('Times-Italic',18)
+        self.c.setFont('Times-Roman',18)
         self.c.drawString(self.width/2 - 3.5*inch, self.height/2 - 5*inch, "Comments")
         self.c.setLineWidth(0.1) 
         self.c.rect(1.6*cm,inch,7*inch,9*inch, stroke=1, fill=0)
