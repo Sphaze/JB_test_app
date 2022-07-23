@@ -6,7 +6,7 @@ from reportlab.lib.pagesizes import A4
 from .models import Post
 from django.conf import settings
 from django.http import HttpResponse
-from reportlab.platypus import Paragraph, Frame
+from reportlab.platypus import Paragraph, Frame, Table, KeepInFrame
 from reportlab.platypus.flowables import TopPadder
 from reportlab.lib.colors import *
 from reportlab.lib.enums import *
@@ -266,15 +266,24 @@ class Report:
         self.c.setFont('Times-Roman',16)
         self.c.drawString(self.width/2 - 3.5*inch, self.height/2 - 5*inch, "Description")
         self.c.setLineWidth(0.1) 
-        self.c.rotate(360)
-        text = "It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts." 
+        text = '''It is a paradisematic country, in which roasted parts of
+                sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts.It is a
+                paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing
+                has no control about the blind texts. It is a paradisematic country, in which roasted parts of
+                sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts.It is a
+                paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing
+                has no control about the blind texts.'''     
+        self.c.bottomup = 1
+        self.c.scale(1,-1)
         framedata = []
-        frame = Frame(1.6*cm, inch, 7*inch, 9*inch, topPadding = 0, bottomPadding = 3*mm, leftPadding=3*mm, showBoundary=1)
+        frame = Frame(1.6*cm, -10*inch, 7*inch, 9*inch, leftPadding=3*mm, showBoundary=1)
         frame.addFromList(framedata, self.c)
-        textstyle = self.styles['Normal']
+        textstyle = self.styles['Normal']   
         p = Paragraph(text, textstyle)
-        framedata.append(TopPadder(p))
+        framedText = KeepInFrame(maxWidth=0, maxHeight=9*inch, content=[p], mode='shrink')   
+        framedata.append(framedText)
         frame.addFromList(framedata, self.c)
+        self.c.bottomup = 0
         self.c.restoreState()
         self.includeFooter(pagenumber)
 
@@ -296,17 +305,19 @@ class Report:
         self.c.setFont('Times-Roman',16)
         self.c.drawString(self.width/2 - 3.5*inch, self.height/2 - 5*inch, "Comments")
         self.c.setLineWidth(0.1) 
-        framedata = []
-        frame = Frame(1.6*cm, inch, 7*inch, 9*inch, bottomPadding=6*mm, leftPadding=3*mm, showBoundary=1)
-        frame.addFromList(framedata, self.c)
         text = "Far far away, behind the word mountains.... "
-        textstyle = self.styles['Normal']
-        p = Paragraph(text, textstyle)
-        framedata.append(TopPadder(p))
+        self.c.bottomup = 1
+        self.c.scale(1,-1)
+        framedata = []
+        frame = Frame(1.6*cm, -10*inch, 7*inch, 9*inch, leftPadding=3*mm, showBoundary=1)
         frame.addFromList(framedata, self.c)
+        textstyle = self.styles['Normal']   
+        p = Paragraph(text, textstyle)
+        framedText = KeepInFrame(maxWidth=0, maxHeight=9*inch, content=[p], mode='shrink')   
+        framedata.append(framedText)
+        frame.addFromList(framedata, self.c)
+        self.c.bottomup = 0
         self.c.restoreState()
         self.includeFooter(pagenumber)
-
- 
 
     
