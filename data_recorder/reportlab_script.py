@@ -309,7 +309,6 @@ class Report:
         self.c.scale(1,-1)
         framedata = []
         frame = Frame(1.6*cm, -10*inch, 7*inch, 9*inch, leftPadding=3*mm, showBoundary=1)
-        frame.addFromList(framedata, self.c)
         textstyle = self.styles['Normal']   
         p = Paragraph(text, textstyle)
         framedText = KeepInFrame(maxWidth=0, maxHeight=9*inch, content=[p], mode='shrink')   
@@ -331,7 +330,6 @@ class Report:
         self.c.scale(1,-1)
         framedata = []
         frame = Frame(1.6*cm, -10*inch, 7*inch, 9*inch, leftPadding=4*mm, topPadding=4*mm, showBoundary=1)
-        frame.addFromList(framedata, self.c)
         framedImage = KeepInFrame(maxWidth=5*inch, maxHeight=6*inch, content=[media], hAlign='LEFT', mode='shrink', fakeWidth=False) 
         framedata.append(framedImage)
         frame.addFromList(framedata, self.c)
@@ -351,7 +349,6 @@ class Report:
         self.c.scale(1,-1)
         framedata = []
         frame = Frame(1.6*cm, -10*inch, 7*inch, 9*inch, leftPadding=3*mm, showBoundary=1)
-        frame.addFromList(framedata, self.c)
         textstyle = self.styles['Normal']   
         p = Paragraph(text, textstyle)
         framedText = KeepInFrame(maxWidth=0, maxHeight=9*inch, content=[p], mode='shrink')   
