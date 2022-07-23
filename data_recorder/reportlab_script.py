@@ -6,12 +6,13 @@ from reportlab.lib.pagesizes import A4
 from .models import Post
 from django.conf import settings
 from django.http import HttpResponse
-from reportlab.platypus import Paragraph, Frame, Table, KeepInFrame
-from reportlab.platypus.flowables import TopPadder
+from reportlab.platypus import Paragraph, Image, Frame, KeepInFrame
 from reportlab.lib.colors import *
 from reportlab.lib.enums import *
 
 class Report:
+
+    report_title = "NCR report.pdf"
 
     def __init__(self, filename):   
 
@@ -40,7 +41,7 @@ class Report:
 
     
     def generate(request):
-        doc = Report("report.pdf")
+        doc = Report(Report.report_title)
         response = HttpResponse()
         response.content = doc.getBuffer()
         response.headers['Content-Disposition'] = 'inline; filename=' + doc.filename
@@ -294,7 +295,16 @@ class Report:
         self.c.setFont('Times-Roman',16)
         self.c.drawString(self.width/2 - 3.5*inch, self.height/2 - 5*inch, "Related media")
         self.c.setLineWidth(0.1) 
-        self.c.rect(1.6*cm,inch,7*inch,9*inch, stroke=1, fill=0)
+        media = Image(os.path.join(settings.STATIC_ROOT,"img/eng_building.jpg"))
+        self.c.bottomup = 1
+        self.c.scale(1,-1)
+        framedata = []
+        frame = Frame(1.6*cm, -10*inch, 7*inch, 9*inch, leftPadding=0, topPadding=1*cm, showBoundary=1)
+        frame.addFromList(framedata, self.c)
+        framedImage = KeepInFrame(maxWidth=2.5*inch, maxHeight=2.5*inch, content=[media], hAlign='CENTER', mode='shrink')   
+        framedata.append(framedImage)
+        frame.addFromList(framedata, self.c)
+        self.c.bottomup = 0
         self.c.restoreState()
         self.includeFooter(pagenumber)
 
