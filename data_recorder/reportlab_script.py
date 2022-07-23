@@ -295,13 +295,13 @@ class Report:
         self.c.setFont('Times-Roman',16)
         self.c.drawString(self.width/2 - 3.5*inch, self.height/2 - 5*inch, "Related media")
         self.c.setLineWidth(0.1) 
-        media = Image(os.path.join(settings.STATIC_ROOT,"img/eng_building.jpg"))
+        media = Image(os.path.join(settings.STATIC_ROOT,"img/eng_building.jpg"), useDPI=True)
         self.c.bottomup = 1
         self.c.scale(1,-1)
         framedata = []
-        frame = Frame(1.6*cm, -10*inch, 7*inch, 9*inch, leftPadding=0, topPadding=1*cm, showBoundary=1)
+        frame = Frame(1.6*cm, -10*inch, 7*inch, 9*inch, leftPadding=4*mm, topPadding=4*mm, showBoundary=1)
         frame.addFromList(framedata, self.c)
-        framedImage = KeepInFrame(maxWidth=2.5*inch, maxHeight=2.5*inch, content=[media], hAlign='CENTER', mode='shrink')   
+        framedImage = KeepInFrame(maxWidth=5*inch, maxHeight=6*inch, content=[media], hAlign='LEFT', mode='shrink', fakeWidth=False) 
         framedata.append(framedImage)
         frame.addFromList(framedata, self.c)
         self.c.bottomup = 0
