@@ -3,12 +3,43 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch, mm, cm
 from reportlab.lib.pagesizes import A4
-from .models import Post
+#from .models import Post
 from django.conf import settings
 from django.http import HttpResponse
 from reportlab.platypus import Paragraph, Image, Frame, KeepInFrame
 from reportlab.lib.colors import *
 from reportlab.lib.enums import *
+
+'''
+urls.py: 
+
+from .reportlab_script import Report
+
+path(Report.title, Report.generate, name='run_pdfgen'),
+
+
+
+
+html script (example of calling the pdf generator):
+
+<a class="btn btn-primary" name="pdf_button" href="{% url 'run_pdfgen' %}">Generate PDF</a>
+
+
+
+
+images type and location:
+
+- Must be jpeg format for Heroku
+- project_root_directory/staticfiles/img
+
+
+
+
+Firefox PDF behaviour settings can be altered:
+
+Firefox -> Application menu -> Settings -> Scroll down to "Applications" -> PDF options = "Always ask/Open in Firefox"
+
+'''
 
 class Report:
 
@@ -186,7 +217,7 @@ class Report:
         textobject.textLine("placeholder")
         self.c.drawText(textobject)
 
-        data = Post.objects.last() #most recent database object from my database model called "Post"
+        #data = Post.objects.last() #most recent database object from my database model called "Post"
         
         '''headings'''
 
