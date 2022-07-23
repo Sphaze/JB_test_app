@@ -17,5 +17,5 @@ urlpatterns = [
     # path('report_csv', views.report_csv, name='report_csv'),
 
   
-    path('report.pdf', Report.generate, name='run_pdfgen'),
+    path(Report.report_title, Report.generate, name='run_pdfgen'),
 ]

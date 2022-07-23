@@ -15,7 +15,7 @@ urls.py:
 
 from .reportlab_script import Report
 
-path(Report.title, Report.generate, name='run_pdfgen'),
+path(Report.report_title, Report.generate, name='run_pdfgen'),
 
 
 
